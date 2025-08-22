@@ -1,4 +1,4 @@
-.PHONY: build test run fmt lint
+.PHONY: build test run fmt
 
 build:
 	go build ./...
@@ -11,4 +11,3 @@ run:
 
 fmt:
 	gofmt -w .
-

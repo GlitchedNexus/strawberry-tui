@@ -3,23 +3,20 @@ package selectlist
 import (
 	"strings"
 	"time"
-
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/GlitchedNexus/strawberrytui/pkg/anim"
-	"github.com/GlitchedNexus/strawberrytui/pkg/theme"
+	"yourapp/anim"
+	"yourapp/theme"
 )
 
-// Props configure the SelectList.
 type Props struct {
 	Theme    theme.Theme
 	Items    []string
 	Selected int
-	Duration time.Duration // optional; defaults to Theme.Tokens.Motion.Normal
+	Duration time.Duration
 }
 
-// Model renders an animated keyboard-driven list.
 type Model struct {
 	p Props
 	a *anim.Animator
@@ -61,16 +58,12 @@ func (m Model) View() string {
 	padBase, padMax := 1, 4
 	for i, it := range m.p.Items {
 		selected := i == m.p.Selected
-		s := m.p.Theme.Styles.Highlighter // will override for unselected
+		s := m.p.Theme.Styles.Highlighter
 		if selected {
 			pad := anim.LerpInt(padBase, padMax, t)
 			bg := anim.LerpHexRGB(m.p.Theme.Tokens.Colors.Surface, m.p.Theme.Tokens.Colors.Primary, t)
 			fg := anim.LerpHexRGB(m.p.Theme.Tokens.Colors.Text,    m.p.Theme.Tokens.Colors.PrimaryFg, t)
-			s = lipgloss.NewStyle().
-				Padding(0, pad).
-				Background(lipgloss.Color(bg)).
-				Foreground(lipgloss.Color(fg)).
-				Bold(true)
+			s = lipgloss.NewStyle().Padding(0, pad).Background(lipgloss.Color(bg)).Foreground(lipgloss.Color(fg)).Bold(true)
 		} else {
 			s = m.p.Theme.Styles.Panel.Base.Padding(0,1)
 		}

@@ -10,15 +10,16 @@ import (
 //go:embed templates/button.tmpl
 var buttonTmpl string
 
+//go:embed templates/selectlist.tmpl
+var selectListTmpl string
+
 func usage() {
 	fmt.Println("tui-cli init <appdir>\n" +
-		"tui-cli add button <destdir>")
+		"tui-cli add button <destdir>\n" +
+		"tui-cli add selectlist <destdir>")
 }
 
-func ensureDir(dir string) error {
-	return os.MkdirAll(dir, 0o755)
-}
-
+func ensureDir(dir string) error { return os.MkdirAll(dir, 0o755) }
 func writeFile(path, content string) error {
 	if err := ensureDir(filepath.Dir(path)); err != nil { return err }
 	return os.WriteFile(path, []byte(content), 0o644)
@@ -27,7 +28,6 @@ func writeFile(path, content string) error {
 func cmdInit(args []string) error {
 	if len(args) < 1 { return fmt.Errorf("missing <appdir>") }
 	app := args[0]
-	// Write theme skeleton into app
 	tokens := `package theme
 
 type Tokens struct {
@@ -37,18 +37,10 @@ type Tokens struct {
 	Space  []int
 	Radius []int
 	Border struct{ Normal, Focused string }
+	Motion Motion
 }
 
-var LightTokens = func() Tokens {
-	var t Tokens
-	t.Colors = struct {
-		Bg, Surface, Text, Muted, Primary, PrimaryFg, Warning, Success string
-	}{"#0B0C0F", "#111317", "#E6E8EB", "#9BA3AF", "#3B82F6", "#0B0C0F", "#F59E0B", "#10B981"}
-	t.Space = []int{0,1,2,3,4,6,8}
-	t.Radius = []int{0,1,2,3}
-	t.Border = struct{ Normal, Focused string }{"#2A2F3A", "#3B82F6"}
-	return t
-}()
+type Motion struct { Fast, Normal, Slow time.Duration }
 `
 	styles := `package theme
 
@@ -62,54 +54,12 @@ type Styles struct {
 	Panel struct {
 		Base, Header lipgloss.Style
 	}
-}
-
-func BuildStyles(t Tokens) Styles {
-	var s Styles
-	bg := lipgloss.Color(t.Colors.Bg)
-	surf := lipgloss.Color(t.Colors.Surface)
-	text := lipgloss.Color(t.Colors.Text)
-	primary := lipgloss.Color(t.Colors.Primary)
-	primaryFg := lipgloss.Color(t.Colors.PrimaryFg)
-	border := lipgloss.Color(t.Border.Normal)
-	focus := lipgloss.Color(t.Border.Focused)
-
-	s.Button.Base = lipgloss.NewStyle().
-		Padding(0, 2).
-		Foreground(text).
-		Background(surf).
-		BorderStyle(lipgloss.RoundedBorder()).
-		BorderForeground(border)
-
-	s.Button.Primary = s.Button.Base.
-		Background(primary).
-		Foreground(primaryFg)
-
-	s.Button.Ghost = lipgloss.NewStyle().
-		Padding(0, 2).
-		Foreground(text)
-
-	s.Button.Focused = s.Button.Base.BorderForeground(focus)
-
-	s.Panel.Base = lipgloss.NewStyle().
-		Background(surf).
-		Foreground(text).
-		Padding(t.Space[2])
-	s.Panel.Header = lipgloss.NewStyle().Bold(true).Foreground(bg)
-	return s
+	Highlighter lipgloss.Style
 }
 `
 	themeGo := `package theme
-
-type Theme struct {
-	Tokens Tokens
-	Styles Styles
-	Name   string
-}
-
-func New(name string, tokens Tokens) Theme {
-	return Theme{Name: name, Tokens: tokens, Styles: BuildStyles(tokens)}
-}
+type Theme struct { Tokens Tokens; Styles Styles; Name string }
+func New(name string, tokens Tokens) Theme { return Theme{Name: name, Tokens: tokens, Styles: BuildStyles(tokens)} }
 `
 	if err := writeFile(filepath.Join(app, "theme", "tokens.go"), tokens); err != nil { return err }
 	if err := writeFile(filepath.Join(app, "theme", "styles.go"), styles); err != nil { return err }
@@ -119,18 +69,16 @@ func New(name string, tokens Tokens) Theme {
 }
 
 func cmdAdd(args []string) error {
-	if len(args) < 2 { return fmt.Errorf("usage: tui-cli add button <destdir>") }
-	comp := args[0]
-	dest := args[1]
+	if len(args) < 2 { return fmt.Errorf("usage: tui-cli add <component> <destdir>") }
+	comp := args[0]; dest := args[1]
 	switch comp {
 	case "button":
-		path := filepath.Join(dest, "button.go")
-		if err := writeFile(path, buttonTmpl); err != nil { return err }
-		fmt.Println("wrote:", path)
+		return writeFile(filepath.Join(dest, "button.go"), buttonTmpl)
+	case "selectlist":
+		return writeFile(filepath.Join(dest, "selectlist.go"), selectListTmpl)
 	default:
 		return fmt.Errorf("unknown component: %s", comp)
 	}
-	return nil
 }
 
 func main() {
