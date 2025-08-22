@@ -3,6 +3,9 @@ package theme
 import "github.com/charmbracelet/lipgloss"
 
 type Styles struct {
+	Item   lipgloss.Style
+	ItemSelected lipgloss.Style
+	Accent lipgloss.Style
 	Button struct {
 		Base, Primary, Ghost lipgloss.Style
 		Focused              lipgloss.Style
@@ -14,13 +17,19 @@ type Styles struct {
 
 func BuildStyles(t Tokens) Styles {
 	var s Styles
-	bg := lipgloss.Color(t.Colors.Bg)
-	surf := lipgloss.Color(t.Colors.Surface)
 	text := lipgloss.Color(t.Colors.Text)
+	surf := lipgloss.Color(t.Colors.Surface)
 	primary := lipgloss.Color(t.Colors.Primary)
+	accent := lipgloss.Color(t.Border.Focused)
+	bg := lipgloss.Color(t.Colors.Bg)
 	primaryFg := lipgloss.Color(t.Colors.PrimaryFg)
 	border := lipgloss.Color(t.Border.Normal)
 	focus := lipgloss.Color(t.Border.Focused)
+
+	s.Item = lipgloss.NewStyle().Foreground(text).Background(surf).Padding(0,1)
+	s.ItemSelected = lipgloss.NewStyle().Foreground(lipgloss.Color(t.Colors.PrimaryFg)).Background(primary).Padding(0,2)
+	s.Accent = lipgloss.NewStyle().Foreground(lipgloss.Color(accent))
+
 
 	s.Button.Base = lipgloss.NewStyle().
 		Padding(0, 2).
