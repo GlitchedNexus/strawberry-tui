@@ -72,12 +72,12 @@ func cmdAdd(args []string) error {
 	if len(args) < 2 { return fmt.Errorf("usage: tui-cli add <component> <destdir>") }
 	comp := args[0]; dest := args[1]
 	switch comp {
-	case "button":
-		return writeFile(filepath.Join(dest, "button.go"), buttonTmpl)
-	case "selectlist":
-		return writeFile(filepath.Join(dest, "selectlist.go"), selectListTmpl)
-	default:
-		return fmt.Errorf("unknown component: %s", comp)
+		case "button":
+			return writeFile(filepath.Join(dest, "button.go"), buttonTmpl)
+		case "selectlist":
+			return writeFile(filepath.Join(dest, "selectlist.go"), selectListTmpl)
+		default:
+			return fmt.Errorf("unknown component: %s", comp)
 	}
 }
 
