@@ -88,10 +88,10 @@ sequenceDiagram
 │  │   ├─ node.go            # Node, NodeID, Rect, Attr (re-exported aliases)
 │  │   └─ renderer.go        # Renderer interface (constructors wrap internal)
 │  └─ theme/                 # keep your current theme package public
-│      ├─ tokens.go
-│      ├─ theme.go
-│      ├─ styles.go
-│      └─ motion.go
+│      ├─ tokens.go          # design tokens + defaults
+│      ├─ theme.go           # Theme struct + resolvers
+│      ├─ classes.go         # StyleSpec + class parser (Tailwind-like)
+│      └─ motion.go          # design tokens + defaults
 ├─ internal/
 │  └─ renderer/              # NEW: retained-mode engine (private)
 │      ├─ node.go            # base nodes (Box, Text), Props map
