@@ -10,21 +10,21 @@
 
 ```mermaid
 flowchart TB
-  subgraph BT[Bubble Tea MVU]
+  subgraph BT["Bubble Tea (MVU loop)"]
     I[Init / Subscriptions]
     U[Update: msg -> model]
     V[View builds Node Tree]
   end
 
-  subgraph SR[Strawberry Renderer]
-    R1[Reconciler: diff prev vs new]
+  subgraph SR["Strawberry Renderer (retained-mode)"]
+    R1[Reconciler: diff of prevTree vs newTree]
     L[Layout: measure & position]
     P[RenderPlan: dirty rects + cell ops]
   end
 
-  subgraph BK[Backend]
+  subgraph BK["Backend"]
     B1[Double Buffer]
-    B2[PutCell ops]
+    B2[PutCell operations]
     B3[Flush -> frame string]
   end
 
@@ -34,12 +34,14 @@ flowchart TB
   V --> R1 --> L --> P
   P --> B1 --> B2 --> B3 --> T
 
-  subgraph LG[Lipgloss (optional for leaves)]
+  %% Optional styling path for leaf nodes
+  subgraph LG["Lipgloss styling (leaf nodes only)"]
     S1[Text content]
-    S2[Apply style: color / border / padding]
-    S3[Styled string -> cells]
+    S2[Apply style: colors / borders / padding]
+    S3[Styled string to cells]
   end
   S1 --> S2 --> S3 --> P
+
 ```
 
 ### 1.2 Renderer responsibilities
