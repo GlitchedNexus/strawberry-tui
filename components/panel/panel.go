@@ -2,8 +2,9 @@ package panel
 
 import (
 	"strings"
+
+	"github.com/GlitchedNexus/strawberry-tui/pkg/theme"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/GlitchedNexus/strawberrytui/pkg/theme"
 )
 
 type Props struct {

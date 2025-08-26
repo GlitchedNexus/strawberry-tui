@@ -4,11 +4,11 @@ import (
 	"strings"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
+	"github.com/GlitchedNexus/strawberry-tui/pkg/anim"
+	"github.com/GlitchedNexus/strawberry-tui/pkg/theme"
 	"github.com/charmbracelet/bubbles/key"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/GlitchedNexus/strawberrytui/pkg/anim"
-	"github.com/GlitchedNexus/strawberrytui/pkg/theme"
 )
 
 // Props configure the SelectList.

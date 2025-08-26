@@ -2,10 +2,11 @@ package highlightrow
 
 import (
 	"time"
+
+	"github.com/GlitchedNexus/strawberry-tui/pkg/anim"
+	"github.com/GlitchedNexus/strawberry-tui/pkg/theme"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/GlitchedNexus/strawberrytui/pkg/anim"
-	"github.com/GlitchedNexus/strawberrytui/pkg/theme"
 )
 
 // Props configure the row highlighting with variable opacity.
