@@ -1,4 +1,4 @@
-module github.com/GlitchedNexus/strawberrytui
+module github.com/GlitchedNexus/strawberry-tui
 
 go 1.23.0
 

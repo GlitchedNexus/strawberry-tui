@@ -75,34 +75,42 @@ sequenceDiagram
 ## 2) Package Layout
 
 ```
-strawberrytui/
-  anim/                # easing, timelines, springs
-  design/
-    tokens/            # colors, spacing, radii, motion, typography
-    theme/             # Theme struct, merging, utilities
-  renderer/
-    node.go            # interfaces + base node types
-    reconcile.go       # tree diff, keys, mount/unmount hooks
-    layout/
-      flex.go          # row/column, grow/shrink/basis, gap, wrap
-      measure.go       # text measurement, caches
-    raster/
-      painter.go       # text to cells, borders, padding
-      dirty.go         # dirty-rect merge
-    backend/
-      ansi.go          # starter ANSI backend
-      tcell.go         # optional high‑perf backend
-  components/
-    button/
-    panel/
-    list/
-    selectlist/
-    highlightrow/
-  bubbles/             # thin adapters for charmbracelet/bubbles where useful
-  cmd/
-    stuictl/           # CLI scaffolder
-  examples/
-    retained_demo/
+.
+├─ cmd/
+│  ├─ tui-cli/
+│  └─ tui-playground/
+├─ docs/
+├─ pkg/
+│  ├─ anim/                  # keep as-is
+│  ├─ ui/                    # NEW: small public API surface for the renderer
+│  │   ├─ node.go            # Node, NodeID, Rect, Attr (re-exported aliases)
+│  │   └─ renderer.go        # Renderer interface (constructors wrap internal)
+│  └─ theme/                 # keep your current theme package public
+│      ├─ tokens.go
+│      ├─ theme.go
+│      ├─ styles.go
+│      └─ motion.go
+├─ internal/
+│  └─ renderer/              # NEW: retained-mode engine (private)
+│      ├─ node.go            # base nodes (Box, Text), Props map
+│      ├─ reconcile.go       # diffing, mount/unmount
+│      ├─ layout/
+│      │   ├─ flex.go        # row/column, grow/shrink/basis, gap, wrap
+│      │   └─ measure.go     # text width/graphemes, cache
+│      ├─ raster/
+│      │   ├─ painter.go     # string→cells, borders, padding
+│      │   └─ dirty.go       # dirty-rect packing
+│      └─ backend/
+│          ├─ ansi.go        # starter ANSI backend
+│          └─ tcell.go       # optional high-perf backend
+├─ components/
+│  ├─ button/
+│  ├─ panel/
+│  ├─ highlightrow/
+│  └─ selectlist/
+├─ Makefile
+└─ go.mod
+
 ```
 
 ---

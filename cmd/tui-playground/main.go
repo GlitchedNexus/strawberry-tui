@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/GlitchedNexus/strawberry-tui/components/button"
+	"github.com/GlitchedNexus/strawberry-tui/components/highlightrow"
+	"github.com/GlitchedNexus/strawberry-tui/components/panel"
+	"github.com/GlitchedNexus/strawberry-tui/components/selectlist"
+	"github.com/GlitchedNexus/strawberry-tui/pkg/anim"
+	"github.com/GlitchedNexus/strawberry-tui/pkg/theme"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/GlitchedNexus/strawberrytui/pkg/anim"
-	"github.com/GlitchedNexus/strawberrytui/pkg/components/button"
-	"github.com/GlitchedNexus/strawberrytui/pkg/components/highlightrow"
-	"github.com/GlitchedNexus/strawberrytui/pkg/components/panel"
-	"github.com/GlitchedNexus/strawberrytui/pkg/components/selectlist"
-	"github.com/GlitchedNexus/strawberrytui/pkg/theme"
 )
 
 type model struct {
